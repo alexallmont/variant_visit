@@ -1,7 +1,7 @@
 #include <array>
 #include <catch2/catch.hpp>
 
-#include "variant_visit.h"
+#include "zob/variant_visit.h"
 
 namespace {
   struct Foo {
