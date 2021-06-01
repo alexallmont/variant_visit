@@ -4,7 +4,7 @@ More docs to follow, but in short I found that std::visit generated very noisy c
 
 ## Example
 
-This was my starting point on Godbolt https://godbolt.org/z/fv8z9Yr6Y. A variant of types Foo and Bar is stored in an array. If the `if (argc == 1)` condition is left out then Clang can reduce this to a move operation, but other compilers add a lot of noise, and when the conditional is introduced, all compilers don't seem to be able to reduce the visit gracefully:
+This was my starting point on Godbolt <https://godbolt.org/z/fv8z9Yr6Y>. A variant of types Foo and Bar is stored in an array. If the `if (argc == 1)` condition is left out then Clang can reduce this to a move operation, but other compilers add a lot of noise, and when the conditional is introduced, all compilers don't seem to be able to reduce the visit gracefully:
 
     struct Foo {};
     struct Bar {};
