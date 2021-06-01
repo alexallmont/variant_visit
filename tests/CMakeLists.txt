@@ -1,11 +1,12 @@
 add_executable(tests
-  main.cpp
   test_visit.cpp
 )
 
-target_link_libraries(tests PRIVATE Catch2::Catch2 variant_visit)
+target_link_libraries(tests
+  PRIVATE
+    variant_visit
+    gtest_main
+)
 
-list(APPEND CMAKE_MODULE_PATH ${catch2_SOURCE_DIR}/contrib)
-include(CTest)
-include(Catch)
-catch_discover_tests(tests)
+include(GoogleTest)
+gtest_discover_tests(tests)

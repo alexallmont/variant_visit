@@ -1,5 +1,5 @@
 #include <array>
-#include <catch2/catch.hpp>
+#include <gtest/gtest.h>
 
 #include "zob/variant_visit.h"
 
@@ -24,11 +24,12 @@ namespace {
       counter *= bar.b;
     }
   };
-} // namespace
+} // local namespace
+
 
 // This is not a well-defined test, for now I'm just testing that
 // visitation broadly works as expected
-TEST_CASE("Variant Visitor Experiment", "[variant_visit]" ) {
+TEST(VariantVisitTest, CheckVisitCalls) {
   std::array<FooBar, 4> arr = {Foo{}, Bar{}, Bar{}, Foo{}};
 
   // Test visiting vanilla array
@@ -39,7 +40,7 @@ TEST_CASE("Variant Visitor Experiment", "[variant_visit]" ) {
     }
     // Expected value as if right-folded
     const int expected = (((((0) + 1) * 2) * 2) + 1);
-    REQUIRE(fbvisit.counter == expected);
+    EXPECT_EQ(fbvisit.counter, expected);
   }
 
   // Test visiting mutated array
@@ -53,6 +54,6 @@ TEST_CASE("Variant Visitor Experiment", "[variant_visit]" ) {
     }
     // Expected value as if right-folded
     const int expected = (((((0) + 1) + 1) * 2) + 1);
-    REQUIRE(fbvisit.counter == expected);
+    EXPECT_EQ(fbvisit.counter, expected);
   }
 }
