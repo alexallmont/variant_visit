@@ -24,7 +24,7 @@ This was my starting point on Godbolt <https://godbolt.org/z/fv8z9Yr6Y>. A varia
 
       FooBarVisitor sv;
       for (const auto& a : arr) {
-         zob::visit(a, sv);
+         zob::visit(sv, a);
          //std::visit(sv, a);
       }
 

@@ -56,7 +56,7 @@ namespace {
   bool run_zob_visit() {
     FooBarVisitor fbvisit;
     for (const auto& foobar : foobar_array) {
-      zob::visit(foobar, fbvisit);
+      zob::visit(fbvisit, foobar);
     }
 
     return true; // Return value for compiling with DoNotOptimize

@@ -78,15 +78,15 @@ namespace zob {
   //!     void operator(const Bar&) { --counter; }
   //!   };
   //!   ...
-  //!   visit(FooBar, VisitFooBar{});
+  //!   visit(VisitFooBar{}, FooBar);
 
   template <
     typename Visitor,
     typename... VariantArgs
   >
   constexpr void visit(
-    const std::variant<VariantArgs...>& inst,
-    Visitor& visitor
+    Visitor& visitor,
+    const std::variant<VariantArgs...>& inst
   ) {
     // Generate a caller typed on variant arguments
     auto caller = detail::ConstVariantCallVisitor<

@@ -36,7 +36,7 @@ TEST(VariantVisitTest, CheckVisitCalls) {
   {
     FooBarVisitor fbvisit;
     for (const auto& a : arr) {
-        zob::visit(a, fbvisit);
+        zob::visit(fbvisit, a);
     }
     // Expected value as if right-folded
     const int expected = (((((0) + 1) * 2) * 2) + 1);
@@ -50,7 +50,7 @@ TEST(VariantVisitTest, CheckVisitCalls) {
 
     FooBarVisitor fbvisit;
     for (const auto& a : arr) {
-        zob::visit(a, fbvisit);
+        zob::visit(fbvisit, a);
     }
     // Expected value as if right-folded
     const int expected = (((((0) + 1) + 1) * 2) + 1);
