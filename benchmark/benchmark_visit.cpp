@@ -1,4 +1,5 @@
 #include <array>
+#include <random>
 #include <variant>
 
 #include <benchmark/benchmark.h>
@@ -26,48 +27,65 @@ namespace {
       counter += bar.b;
     }
   };
-} // local namespace
 
-//! Return an array of random FooBar values that is static, so the same values can be reused in multiple benchmarks
-//!
-auto generate_identical_foobar_array() {
-  const size_t N = 100000;
-  static std::array<FooBar, N> result;
+  const size_t N = 10000;
+  static std::array<FooBar, N> foobar_array;
 
-  bool generated = false;
-  if (!generated) {
+  void init_foobar_array() {
+    // Only initialised once, so array has same contents for all tests
+    bool initialized = false;
+    if (initialized) {
+      return;
+    }
+
+    // Random number generator for 0 or 1
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<int> dist(0, 1);
+
+    // Propagate variant array with random Foo and Bar instances
     for (size_t i = 0; i < N; ++i) {
-      if (i & 1) {
-        result[i] = Foo{};
+      if (dist(gen) == 0) {
+        foobar_array[i] = Foo{};
       } else {
-        result[i] = Bar{};
+        foobar_array[i] = Bar{};
       }
     }
   }
 
-  return result;
-}
+  bool run_zob_visit() {
+    FooBarVisitor fbvisit;
+    for (const auto& foobar : foobar_array) {
+      zob::visit(foobar, fbvisit);
+    }
+
+    return true; // Return value for compiling with DoNotOptimize
+  }
+
+  bool run_std_visit() {
+    FooBarVisitor fbvisit;
+    for (const auto& foobar : foobar_array) {
+      std::visit(fbvisit, foobar);
+    }
+
+    return true; // Return value for compiling with DoNotOptimize
+  }
+} // local namespace
 
 static void benchmark_zob_visit(benchmark::State& state) {
-  FooBarVisitor fbvisit;
-  auto arr = generate_identical_foobar_array();
+  init_foobar_array();
 
   for (auto _ : state) {
-    for (const auto& a : arr) {
-        zob::visit(a, fbvisit);
-    }
+    benchmark::DoNotOptimize(run_zob_visit());
   }
 }
 BENCHMARK(benchmark_zob_visit);
 
 static void benchmark_std_visit(benchmark::State& state) {
-  FooBarVisitor fbvisit;
-  auto arr = generate_identical_foobar_array();
+  init_foobar_array();
 
   for (auto _ : state) {
-    for (const auto& a : arr) {
-        std::visit(fbvisit, a);
-    }
+    benchmark::DoNotOptimize(run_std_visit());
   }
 }
 BENCHMARK(benchmark_std_visit);

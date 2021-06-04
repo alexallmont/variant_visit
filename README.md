@@ -40,3 +40,11 @@ Whilst std::visit generated:
 ![std::visit example](/images/std-visit.png)
 
 For now this is parked as an idea, if it's useful please let me know and I'll revisit it. Please pardon the visitor and variant args being swapped between zob::visit and std::visit. There are other things to address if this is useful, for example it currently only works with const references and the call operator cannot take a variable number of args.
+
+## Run benchmarks
+
+As per the Google Benchmark docs, to build with CMake into a folder called "build"
+
+    $ cmake -DCMAKE_BUILD_TYPE=Release -S . -B build
+    $ cmake --build build --config Release
+    $ build/benchmark/Release/benchmarks.exe
