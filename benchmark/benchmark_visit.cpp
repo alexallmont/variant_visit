@@ -33,9 +33,11 @@ namespace {
 
   void init_foobar_array() {
     // Only initialised once, so array has same contents for all tests
-    bool initialized = false;
+    static bool initialized = false;
     if (initialized) {
       return;
+    } else {
+      initialized = true;
     }
 
     // Random number generator for 0 or 1
